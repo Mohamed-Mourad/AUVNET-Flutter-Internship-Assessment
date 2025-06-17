@@ -1,4 +1,8 @@
 
+import 'package:auvnet_task/core/theme/bloc/theme_bloc.dart';
+import 'package:auvnet_task/layout/home_layout.dart';
+import 'package:auvnet_task/core/theme/themes/dark_theme.dart';
+import 'package:auvnet_task/core/theme/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +25,7 @@ class App extends StatelessWidget {
     );
   }
 
-  ThemeData _getThemneData(ThemeState themeState) {
+  ThemeData _getThemeData(ThemeState themeState) {
     switch(themeState) {
       case ThemeState.light:
         return LightTheme.theme;
