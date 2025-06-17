@@ -1,4 +1,3 @@
-import 'package:auvnet_task/data/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum ThemeEvent { toggleTheme }
@@ -11,7 +10,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       if (event == ThemeEvent.toggleTheme) {
         final newState = _getNextThemeState(state);
         emit(newState);
-        CacheHelper.sharedPreferences.setInt(_themeKey, newState.index);
+        //CacheHelper.sharedPreferences.setInt(_themeKey, newState.index);
       }
     });
   }
@@ -19,7 +18,8 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   final String _themeKey = 'theme';
 
   Future<void> _loadTheme() async {
-    final index = CacheHelper.sharedPreferences.getInt(_themeKey) ?? ThemeState.light.index;
+    //final index = CacheHelper.sharedPreferences.getInt(_themeKey) ?? ThemeState.light.index;
+    const index = 0;
     emit(ThemeState.values[index]);
   }
 

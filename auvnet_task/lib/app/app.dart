@@ -1,8 +1,7 @@
-
 import 'package:auvnet_task/core/theme/bloc/theme_bloc.dart';
-import 'package:auvnet_task/layout/home_layout.dart';
 import 'package:auvnet_task/core/theme/themes/dark_theme.dart';
 import 'package:auvnet_task/core/theme/themes/light_theme.dart';
+import 'package:auvnet_task/presentation/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +17,7 @@ class App extends StatelessWidget {
               return MaterialApp(
                 title: "Auvnet Task",
                 theme: _getThemeData(themeState),
-                home: const HomeLayout(),
+                home: const HomeScreen(),
               );
             }
         ),
