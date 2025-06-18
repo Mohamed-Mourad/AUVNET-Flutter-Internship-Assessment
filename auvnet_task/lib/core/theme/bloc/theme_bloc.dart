@@ -1,34 +1,45 @@
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:auvnet_task/data/datasources/user_prefs_data_source.dart';
+import 'package:auvnet_task/core/theme/themes/dark_theme.dart';
+import 'package:auvnet_task/core/theme/themes/light_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum ThemeEvent { toggleTheme }
-enum ThemeState { light, dark }
+part 'theme_event.dart';
 
-class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
-  ThemeBloc() : super(ThemeState.light) {
-    _loadTheme();
-    on<ThemeEvent>((event, emit) async {
-      if (event == ThemeEvent.toggleTheme) {
-        final newState = _getNextThemeState(state);
-        emit(newState);
-        //CacheHelper.sharedPreferences.setInt(_themeKey, newState.index);
-      }
-    });
+
+class ThemeBloc extends Bloc<ThemeEvent, ThemeData> {
+  final UserPrefsDataSource _userPrefsDataSource;
+
+  ThemeBloc({required UserPrefsDataSource userPrefsDataSource})
+      : _userPrefsDataSource = userPrefsDataSource,
+        super(LightTheme.theme) { // Default theme
+    on<GetInitialTheme>(_onGetInitialTheme);
+    on<ThemeChanged>(_onThemeChanged);
   }
 
-  final String _themeKey = 'theme';
-
-  Future<void> _loadTheme() async {
-    //final index = CacheHelper.sharedPreferences.getInt(_themeKey) ?? ThemeState.light.index;
-    const index = 0;
-    emit(ThemeState.values[index]);
+  Future<void> _onGetInitialTheme(
+      GetInitialTheme event,
+      Emitter<ThemeData> emit,
+      ) async {
+    final themeName = await _userPrefsDataSource.getTheme();
+    if (themeName == 'dark') {
+      emit(DarkTheme.theme);
+    } else {
+      emit(LightTheme.theme);
+    }
   }
 
-  ThemeState _getNextThemeState(ThemeState current) {
-    switch (current) {
-      case ThemeState.light:
-        return ThemeState.dark;
-      case ThemeState.dark:
-        return ThemeState.light;
+  Future<void> _onThemeChanged(
+      ThemeChanged event,
+      Emitter<ThemeData> emit,
+      ) async {
+    if (event.isDark) {
+      emit(DarkTheme.theme);
+      await _userPrefsDataSource.cacheTheme('dark');
+    } else {
+      emit(LightTheme.theme);
+      await _userPrefsDataSource.cacheTheme('light');
     }
   }
 }
