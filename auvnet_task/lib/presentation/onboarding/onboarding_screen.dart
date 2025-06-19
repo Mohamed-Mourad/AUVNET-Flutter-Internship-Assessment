@@ -63,7 +63,7 @@ class _OnboardingView extends StatelessWidget {
             const OnboardingBackground(),
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 90.0),
                 child: Column(
                   children: [
                     Expanded(
@@ -117,11 +117,20 @@ class _NavigationButtons extends StatelessWidget {
 
         if (isLastPage) {
           // Show only the "Get Started" button on the last page.
-          return GetStartedButton(
-            function: () {
-              context.read<OnboardingBloc>().add(OnboardingCompleted());
-            },
-            text: "Get Started",
+          return Column(
+            children: [
+              GetStartedButton(
+                function: () {
+                  context.read<OnboardingBloc>().add(OnboardingCompleted());
+                },
+                text: "Get Started",
+              ),
+              const SizedBox(height: 12),
+              const TextButton(
+                onPressed: null,
+                child: Text(""),
+              ),
+            ],
           );
         } else {
           // Show both buttons in a column on other pages.
